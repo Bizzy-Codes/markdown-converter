@@ -1,92 +1,219 @@
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* src/index.css */
 
-body {
-  font-family: 'Inter', system-ui, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-/* Theme variables */
+/* ---------- base variables (light) ---------- */
 :root {
-  --bg-color: #f4f6fb;
-  --text-color: #1a1a1a;
+  --page-bg: #f4f6fb;
+  --text-color: #111827;
+  --muted-color: #6b7280;
   --box-bg: #ffffff;
-  --border-color: #e0e0e0;
+  --border-color: #e6e9ee;
+  --accent: #0b74ff;
 }
 
-.dark {
-  --bg-color: #1a1a1a;
-  --text-color: #f5f5f5;
-  --box-bg: #2a2a2a;
-  --border-color: #444;
+/* ---------- dark overrides when body has .dark ---------- */
+body.dark {
+  --page-bg: #0f1113;
+  --text-color: #e6eef8;
+  --muted-color: #9aa4b2;
+  --box-bg: #171717;
+  --border-color: #2b2b2b;
+  --accent: #4aa3ff;
 }
 
-/* Container */
-.converter-container {
-  width: 90%;
+/* page base */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; }
+body {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--page-bg);
+  color: var(--text-color);
+  transition: background 0.35s ease, color 0.35s ease;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* center everything and control max width so header + converter align */
+.app-shell {
+  width: 92%;
   max-width: 1000px;
-  height: 600px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--box-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+}
+
+.app-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 0.5rem 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  transform: rotate(8deg) scale(1.05);
+}
+
+/* main wrapper */
+.main-wrapper {
+  width: 100%;
+}
+
+/* converter container (the card) */
+.converter-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.converter-container {
   display: flex;
   gap: 1rem;
   padding: 1rem;
-  border-radius: 16px;
   background: var(--box-bg);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  transition: background 0.3s ease;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 36px rgba(2,6,23,0.06);
+  transition: background 0.3s ease, transform 0.25s ease;
+  min-height: 56vh;
 }
 
-/* Textarea */
-.converter-input {
+/* input area */
+.markdown-input {
   width: 50%;
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1rem;
-  font-size: 1rem;
-  background: var(--bg-color);
-  color: var(--text-color);
+  min-height: 100%;
   resize: none;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-color);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+  font-size: 0.95rem;
   outline: none;
+  transition: color 0.25s ease, background 0.25s ease, border 0.2s ease;
 }
 
-/* Output */
-.converter-output {
+.markdown-input::placeholder {
+  color: var(--muted-color);
+  opacity: 0.9;
+}
+
+/* preview */
+.markdown-preview {
   width: 50%;
   padding: 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  background: var(--bg-color);
+  border-radius: 10px;
+  border: 1px dashed var(--border-color);
+  background: transparent;
+  color: var(--text-color);
   overflow-y: auto;
+  transition: color 0.25s ease;
 }
 
-.converter-output h1, h2, h3, h4, h5, h6 {
+/* small markdown styling (headings, code, blockquote) */
+.markdown-preview h1,
+.markdown-preview h2,
+.markdown-preview h3 {
+  color: var(--text-color);
   margin-bottom: 0.5rem;
-  color: var(--text-color);
 }
 
-/* Toggle button */
-.theme-toggle {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: var(--box-bg);
+.markdown-preview p {
   color: var(--text-color);
-  border: 1px solid var(--border-color);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  margin-bottom: 0.6rem;
+  line-height: 1.5;
+}
+
+.markdown-preview code {
+  display: inline-block;
+  background: rgba(0,0,0,0.04);
+  padding: 0.18rem 0.36rem;
+  border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+}
+
+.markdown-preview pre {
+  background: #0b1220;
+  color: #f8f8f2;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow: auto;
+}
+
+/* export section */
+.export-section {
+  margin-top: 0.6rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
+}
+
+.export-section h3 {
+  margin-right: 0.5rem;
+  color: var(--muted-color);
+  font-weight: 600;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.export-buttons button {
+  padding: 0.6rem 0.7rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--box-bg);
+  color: var(--text-color);
   cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: transform 0.18s ease, background 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.export-buttons button:hover {
+  transform: translateY(-3px) scale(1.03);
+  background: var(--page-bg);
+}
+
+/* small screens: stack editor above preview */
+@media (max-width: 768px) {
+  .converter-container {
+    flex-direction: column;
+    min-height: 50vh;
+  }
+  .markdown-input,
+  .markdown-preview {
+    width: 100%;
+    min-height: 240px;
+  }
+  .app-shell {
+    margin: 1rem auto;
+  }
 }
