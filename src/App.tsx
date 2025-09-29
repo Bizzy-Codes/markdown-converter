@@ -1,12 +1,25 @@
+import React, { useState } from "react";
 import MarkdownConverter from "./MarkdownConverter";
 
-function App() {
+const App: React.FC = () => {
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleTheme = () => {
+    setDarkMode(!darkMode);
+    document.body.classList.toggle("dark");
+  };
+
   return (
     <div>
-      <h1>Markdown Converter</h1>
+      {/* Theme Toggle Button */}
+      <button className="theme-toggle" onClick={toggleTheme}>
+        {darkMode ? "☀️" : "🌙"}
+      </button>
+
+      {/* Markdown Converter */}
       <MarkdownConverter />
     </div>
   );
-}
+};
 
 export default App;

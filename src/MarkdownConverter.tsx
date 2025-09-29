@@ -1,20 +1,21 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import "./markdown.css";
 
-const MarkdownConverter = () => {
-  const [text, setText] = useState<string>("## Hello Markdown 🚀");
+const MarkdownConverter: React.FC = () => {
+  const [markdown, setMarkdown] = useState("# Hello Markdown 🚀");
 
   return (
-    <div className="markdown-container">
+    <div className="converter-container">
+      {/* Input Area */}
       <textarea
-        className="markdown-input"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Write your markdown here..."
+        className="converter-input"
+        value={markdown}
+        onChange={(e) => setMarkdown(e.target.value)}
       />
-      <div className="markdown-preview">
-        <ReactMarkdown>{text}</ReactMarkdown>
+
+      {/* Output Area */}
+      <div className="converter-output">
+        <ReactMarkdown>{markdown}</ReactMarkdown>
       </div>
     </div>
   );
